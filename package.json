@@ -10,12 +10,19 @@
     "type": "git",
     "url": "https://github.com/kahnjw/mockagent.git"
   },
-  "keywords": "",
   "author": "kahnjw",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kahnjw/mockagent/issues"
   },
+  "keywords": [
+    "superagent",
+    "request",
+    "mock",
+    "test",
+    "stub",
+    "spy"
+  ],
   "homepage": "https://github.com/kahnjw/mockagent",
   "devDependencies": {
     "chai": "^3.0.0",
