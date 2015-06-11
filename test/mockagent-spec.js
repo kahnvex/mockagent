@@ -28,6 +28,20 @@ describe('mockagent', function() {
     });
   });
 
+  it('fails a request', function(done) {
+    mockagent.addRoute('/hello', 400, 'response', 'GET');
+
+    superagent.get('/hello').end(function(err, res) {
+      expect(err).to.deep.equal({
+        xhr: {
+          responseText: 'response',
+          status: 400
+        }
+      });
+      done();
+    });
+  })
+
   describe('multiple routes', function(done) {
     var expected = {
       xhr: {
