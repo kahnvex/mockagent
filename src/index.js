@@ -27,18 +27,22 @@ var mockagent = {
         return this._oldEnd(fn);
       }
 
-      var body = _routes[this.url].body;
+      var body = routeObj.body;
 
       if (typeof body === 'object') {
         body = JSON.stringify(body);
       }
 
       var res = {
-        status: _routes[this.url].status,
+        status: routeObj.status,
         responseText: body
       };
 
       setTimeout(function() {
+        if (routeObj.status > 299) {
+          return fn({xhr: res}, null);
+        }
+
         fn(null, {xhr: res});
       });
     };
