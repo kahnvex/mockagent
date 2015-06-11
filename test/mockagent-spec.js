@@ -24,6 +24,9 @@ describe('mockagent', function() {
           status: 200
         }
       });
+
+      expect(err).to.equal(null);
+
       done();
     });
   });
