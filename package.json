@@ -1,0 +1,34 @@
+{
+  "name": "mockagent",
+  "version": "0.0.0",
+  "description": "A mocking utility for superagent",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kahnjw/mockagent.git"
+  },
+  "keywords": "",
+  "author": "kahnjw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kahnjw/mockagent/issues"
+  },
+  "homepage": "https://github.com/kahnjw/mockagent",
+  "devDependencies": {
+    "chai": "^3.0.0",
+    "karma": "^0.12.36",
+    "karma-browserify": "^4.2.1",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-spec-reporter": "0.0.19",
+    "mocha": "^2.2.5",
+    "phantomjs": "^1.9.17",
+    "superagent": "^1.2.0"
+  },
+  "dependencies": {
+    "isarray": "0.0.1"
+  }
+}
