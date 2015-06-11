@@ -16,6 +16,9 @@ mockagent.addRoute('/url/to/fake', 201, {data: 'to return'}, 'PUT');
 
 superagent.put('/url/to/fake')
 // ...
+
+// To tear down the mock
+mockagent.releaseTarget();
 ```
 
 Mockagent can take a single URL to mock, or an array of URLs. The method to
