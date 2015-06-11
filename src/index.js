@@ -27,9 +27,15 @@ var mockagent = {
         return this._oldEnd(fn);
       }
 
+      var body = _routes[this.url].body;
+
+      if (typeof body === 'object') {
+        body = JSON.stringify(body);
+      }
+
       var res = {
         status: _routes[this.url].status,
-        responseText: JSON.stringify(_routes[this.url].body)
+        responseText: body
       };
 
       setTimeout(function() {

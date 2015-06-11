@@ -15,17 +15,12 @@ describe('mockagent', function() {
   });
 
   it('mocks a requests', function(done) {
-    mockagent.addRoute('/hello', 200, {
-      hi: 'back'
-    }, 'GET');
+    mockagent.addRoute('/hello', 200, 'response', 'GET');
 
     superagent.get('/hello').end(function(err, res) {
-      res.xhr.responseText = JSON.parse(res.xhr.responseText);
       expect(res).to.deep.equal({
         xhr: {
-          responseText: {
-            hi: 'back'
-          },
+          responseText: 'response',
           status: 200
         }
       });
