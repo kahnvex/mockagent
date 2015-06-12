@@ -13,7 +13,7 @@ var superagent = require('superagent');
 var mockagent = require('mockagent');
 
 mockagent.target(superagent);
-mockagent.addRoute('/url/to/fake', 201, {data: 'to return'}, 'PUT');
+mockagent.put('/url/to/fake', 201, {data: 'to return'});
 
 superagent.put('/url/to/fake')
 // ...
@@ -22,10 +22,9 @@ superagent.put('/url/to/fake')
 mockagent.releaseTarget();
 ```
 
-Mockagent can take a single URL to mock, or an array of URLs. The method to
-mock is optional. If no method is given, all methods will be mocked. The
-response can be given as an object, or a string. If it is given as an object,
-it will be serialized to a JSON string before being returned.
+Mockagent can take a single URL to mock, or an array of URLs. The response
+can be given as an object, or a string. If it is given as an object, it will
+be serialized to a JSON string before being returned.
 
 ## Development
 
