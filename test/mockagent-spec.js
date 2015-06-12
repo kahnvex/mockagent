@@ -15,7 +15,7 @@ describe('mockagent', function() {
   });
 
   it('mocks a requests', function(done) {
-    mockagent.addRoute('/hello', 200, 'response', 'GET');
+    mockagent.get('/hello', 200, 'response');
 
     superagent.get('/hello').end(function(err, res) {
       expect(res).to.deep.equal({
@@ -32,7 +32,7 @@ describe('mockagent', function() {
   });
 
   it('fails a request', function(done) {
-    mockagent.addRoute('/hello', 400, 'response', 'GET');
+    mockagent.get('/hello', 400, 'response');
 
     superagent.get('/hello').end(function(err, res) {
       expect(err).to.deep.equal({
@@ -43,9 +43,9 @@ describe('mockagent', function() {
       });
       done();
     });
-  })
+  });
 
-  describe('multiple routes', function(done) {
+  describe('multiple urls', function(done) {
     var expected = {
       xhr: {
         responseText: {hi: 'back'},
@@ -54,8 +54,8 @@ describe('mockagent', function() {
     };
 
     beforeEach(function() {
-      var routes = ['/route-one', '/route-two'];
-      mockagent.addRoute(routes, 200, {
+      var urls = ['/route-one', '/route-two'];
+      mockagent.url(urls, 200, {
         hi: 'back'
       }, 'PUT');
     });
