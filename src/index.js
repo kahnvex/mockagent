@@ -1,15 +1,15 @@
 var isArray = require('isarray');
-var _superagent, _routes = {};
+var _superagent, _urls = {};
 
-var _assignRoute = function(status, body, method) {
-  return function(route) {
-    _routes[route] = {
+var _assignurl = function(status, body, method) {
+  return function(url) {
+    _urls[url] = {
       status: status,
       body: body
     }
 
     if (method) {
-      _routes[route].method = method;
+      _urls[url].method = method;
     }
   };
 };
@@ -21,25 +21,25 @@ var mockagent = {
 
     _superagent.Request.prototype.end = function(fn) {
 
-      var routeObj = _routes[this.url];
+      var urlObj = _urls[this.url];
 
-      if (! routeObj || (routeObj.method && routeObj.method !== this.method)) {
+      if (! urlObj || (urlObj.method && urlObj.method !== this.method)) {
         return this._oldEnd(fn);
       }
 
-      var body = routeObj.body;
+      var body = urlObj.body;
 
       if (typeof body === 'object') {
         body = JSON.stringify(body);
       }
 
       var res = {
-        status: routeObj.status,
+        status: urlObj.status,
         responseText: body
       };
 
       setTimeout(function() {
-        if (routeObj.status > 299) {
+        if (urlObj.status > 299) {
           return fn({xhr: res}, null);
         }
 
@@ -49,14 +49,42 @@ var mockagent = {
 
   },
 
-  addRoute: function(route, status, body, method) {
-    var assignRoute = _assignRoute(status, body, method);
+  url: function(url, status, body, method) {
+    var assignurl = _assignurl(status, body, method);
 
-    if (isArray(route)) {
-      route.forEach(assignRoute);
+    if (isArray(url)) {
+      url.forEach(assignurl);
     } else {
-      assignRoute(route);
+      assignurl(url);
     }
+  },
+
+  get: function(url, status, body) {
+    this.url(url, status, body, 'GET');
+  },
+
+  put: function(url, status, body) {
+    this.url(url, status, body, 'PUT');
+  },
+
+  post: function(url, status, body) {
+    this.url(url, status, body, 'POST');
+  },
+
+  del: function(url, status, body) {
+    this.url(url, status, body, 'DELETE');
+  },
+
+  patch: function(url, status, body) {
+    this.url(url, status, body, 'PATCH');
+  },
+
+  head: function(url, status, body) {
+    this.url(url, status, body, 'HEAD');
+  },
+
+  options: function(url, status, body) {
+    this.url(url, status, body, 'OPTIONS');
   },
 
   releaseTarget: function() {
