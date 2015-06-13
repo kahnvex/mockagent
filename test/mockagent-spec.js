@@ -76,4 +76,23 @@ describe('mockagent', function() {
       });
     });
   });
+
+  describe('response functions', function() {
+
+    it('returns a response from a function', function(done) {
+      mockagent.get('/fake-url', function(res) {
+        res.xhr = {
+          responseText: 'fake response',
+          status: 201
+        };
+
+        return res;
+      });
+
+      superagent.get('/fake-url').end(function(err, res) {
+        expect(res.xhr.responseText).to.equal('fake response');
+        done();
+      });
+    });
+  });
 });

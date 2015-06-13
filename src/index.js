@@ -28,22 +28,30 @@ var mockagent = {
       }
 
       var body = urlObj.body;
+      var res = { method: urlObj.method };
 
       if (typeof body === 'object') {
         body = JSON.stringify(body);
       }
 
-      var res = {
-        status: urlObj.status,
-        responseText: body
-      };
+      if (typeof urlObj.status === 'function') {
+        res = urlObj.status.bind(this)(res);
+      } else {
+        res = {
+          xhr: {
+            status: urlObj.status,
+            responseText: body
+          }
+        };
+      }
 
       setTimeout(function() {
-        if (urlObj.status > 299) {
-          return fn({xhr: res}, null);
+        if (res && res.xhr && res.xhr.status > 299) {
+          // Status code is in the 200 range, return response successfully
+          return fn(res, null);
         }
 
-        fn(null, {xhr: res});
+        fn(null, res);
       });
     };
 

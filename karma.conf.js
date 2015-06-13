@@ -13,7 +13,10 @@ module.exports = function(config) {
     preprocessors: {
       'test/**/*.js': ['browserify']
     },
-    files: ['test/*-spec.js'],
+    files: [
+      'test/test-setup.js',
+      'test/*-spec.js'
+    ],
     reporters: ['spec'],
     singleRun: true
   });

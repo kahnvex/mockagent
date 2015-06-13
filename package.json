@@ -25,6 +25,7 @@
   ],
   "homepage": "https://github.com/kahnjw/mockagent",
   "devDependencies": {
+    "bindpolyfill": "0.0.0",
     "chai": "^3.0.0",
     "karma": "^0.12.36",
     "karma-browserify": "^4.2.1",
