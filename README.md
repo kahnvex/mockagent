@@ -13,10 +13,26 @@ var superagent = require('superagent');
 var mockagent = require('mockagent');
 
 mockagent.target(superagent);
+
+// Make a simply static mock
 mockagent.put('/url/to/fake', 201, {data: 'to return'});
 
 superagent.put('/url/to/fake')
 // ...
+
+// For more complex mocks, use a function to create the response.
+// This function is bound to the superagent Request instance, making
+// it possible to check headers, request body, etc.
+mockagent.post('/post/url', function(res) {
+
+  if (this.header['Accept'] === 'application/json') {
+    res.xhr = {responseText: '...'};
+  } else {
+    // ...
+  }
+
+  return res;
+});
 
 // To tear down the mock
 mockagent.releaseTarget();
