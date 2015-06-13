@@ -47,7 +47,7 @@ var mockagent = {
 
       setTimeout(function() {
         if (res && res.xhr && res.xhr.status > 299) {
-          // Status code is not in the 200 range, return response as err
+          // Status code is in the 200 range, return response successfully
           return fn(res, null);
         }
 
