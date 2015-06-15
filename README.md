@@ -27,6 +27,7 @@ mockagent.post('/post/url', function(res) {
 
   if (this.header['Accept'] === 'application/json') {
     res.xhr = {responseText: '...'};
+    res.status = 200;
   } else {
     // ...
   }

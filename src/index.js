@@ -38,6 +38,7 @@ var mockagent = {
         res = urlObj.status.bind(this)(res);
       } else {
         res = {
+          method: urlObj.method,
           xhr: {
             status: urlObj.status,
             responseText: body
@@ -98,6 +99,7 @@ var mockagent = {
   releaseTarget: function() {
     _superagent.Request.prototype.end = _superagent.Request.prototype._oldEnd;
     delete _superagent.Request.prototype._oldEnd;
+    _urls = {};
   }
 };
 
