@@ -6,27 +6,20 @@ var superagent = require('superagent');
 describe('mockagent', function() {
   var addRoute;
 
-  before(function() {
+  beforeEach(function() {
     mockagent.target(superagent);
   });
 
-  after(function() {
+  afterEach(function() {
     mockagent.releaseTarget();
   });
 
-  it('mocks a requests', function(done) {
+  it('returns a mock body', function(done) {
     mockagent.get('/hello', 200, 'response');
 
     superagent.get('/hello').end(function(err, res) {
-      expect(res).to.deep.equal({
-        xhr: {
-          responseText: 'response',
-          status: 200
-        }
-      });
-
+      expect(res.xhr.responseText).to.equal('response');
       expect(err).to.equal(null);
-
       done();
     });
   });
@@ -35,22 +28,60 @@ describe('mockagent', function() {
     mockagent.get('/hello', 400, 'response');
 
     superagent.get('/hello').end(function(err, res) {
-      expect(err).to.deep.equal({
-        xhr: {
-          responseText: 'response',
-          status: 400
-        }
-      });
+      expect(err.xhr.status).to.deep.equal(400);
+      done();
+    });
+  });
+
+  it('sends GET requests', function(done) {
+    mockagent.get('/', 200, 'response');
+
+    superagent.get('/').end(function(err, res) {
+      expect(res.method).to.equal('GET');
+      done();
+    });
+  });
+
+  it('sends PUT requests', function(done) {
+    mockagent.put('/', 200, 'response');
+
+    superagent.put('/').end(function(err, res) {
+      expect(res.method).to.equal('PUT');
+      done();
+    });
+  });
+
+  it('sends PATCH requests', function(done) {
+    mockagent.patch('/', 200, 'response');
+
+    superagent.patch('/').end(function(err, res) {
+      expect(res.method).to.equal('PATCH');
+      done();
+    });
+  });
+
+  it('sends POST requests', function(done) {
+    mockagent.post('/', 200, 'response');
+
+    superagent.post('/').end(function(err, res) {
+      expect(res.method).to.equal('POST');
+      done();
+    });
+  });
+
+  it('sends DELETE requests', function(done) {
+    mockagent.del('/', 200, 'response');
+
+    superagent.del('/').end(function(err, res) {
+      expect(res.method).to.equal('DELETE');
       done();
     });
   });
 
   describe('multiple urls', function(done) {
     var expected = {
-      xhr: {
-        responseText: {hi: 'back'},
-        status: 200
-      }
+      responseText: {hi: 'back'},
+      status: 200
     };
 
     beforeEach(function() {
@@ -63,7 +94,7 @@ describe('mockagent', function() {
     it('mocks the first route', function(done) {
       superagent.put('/route-one').end(function(err, res) {
         res.xhr.responseText = JSON.parse(res.xhr.responseText);
-        expect(res).to.deep.equal(expected);
+        expect(res.xhr).to.deep.equal(expected);
         done();
       });
     });
@@ -71,7 +102,7 @@ describe('mockagent', function() {
     it('mocks the second route', function(done) {
       superagent.put('/route-two').end(function(err, res) {
         res.xhr.responseText = JSON.parse(res.xhr.responseText);
-        expect(res).to.deep.equal(expected);
+        expect(res.xhr).to.deep.equal(expected);
         done();
       });
     });
