@@ -24,6 +24,16 @@ describe('mockagent', function() {
     });
   });
 
+  it('excludes querystrings in matching', function(done) {
+    mockagent.get('/querystring', 200, 'querystrings are neat');
+
+    superagent.get('/querystring?foo=bar').end(function(err, res) {
+      expect(res.xhr.responseText).to.equal('querystrings are neat');
+      expect(err).to.equal(null);
+      done();
+    });
+  });
+
   it('fails a request', function(done) {
     mockagent.get('/hello', 400, 'response');
 

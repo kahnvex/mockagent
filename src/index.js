@@ -1,5 +1,6 @@
 var isArray = require('isarray');
 var _superagent, _urls = {};
+var url = require('url');
 
 var _assignurl = function(status, body, method) {
   return function(url) {
@@ -21,7 +22,11 @@ var mockagent = {
 
     _superagent.Request.prototype.end = function(fn) {
 
-      var urlObj = _urls[this.url];
+      var parsedUrl = url.parse(this.url);
+      delete parsedUrl.search;
+      delete parsedUrl.hash;
+
+      var urlObj = _urls[parsedUrl.format()];
 
       if (! urlObj || (urlObj.method && urlObj.method !== this.method)) {
         return this._oldEnd(fn);
@@ -37,12 +42,9 @@ var mockagent = {
       if (typeof urlObj.status === 'function') {
         res = urlObj.status.bind(this)(res);
       } else {
-        res = {
-          method: urlObj.method,
-          xhr: {
-            status: urlObj.status,
-            responseText: body
-          }
+        res.xhr = {
+          status: urlObj.status,
+          responseText: body
         };
       }
 
