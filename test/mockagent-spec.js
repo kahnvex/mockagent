@@ -38,7 +38,7 @@ describe('mockagent', function() {
     mockagent.get('/hello', 400, 'response');
 
     superagent.get('/hello').end(function(err, res) {
-      expect(err.xhr.status).to.deep.equal(400);
+      expect(err.response.xhr.status).to.deep.equal(400);
       done();
     });
   });

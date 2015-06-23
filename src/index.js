@@ -51,7 +51,12 @@ var mockagent = {
       setTimeout(function() {
         if (res && res.xhr && res.xhr.status > 299) {
           // Status code is in the 200 range, return response successfully
-          return fn(res, null);
+          var err = new Error(res.statusText || 'Unsuccessful HTTP response');
+          err.status = res.xhr.status;
+          err.response = res;
+          err.original = null;
+
+          return fn(err, null);
         }
 
         fn(null, res);
